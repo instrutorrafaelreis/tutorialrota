@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Memorização Rápida — OS 191045 (Desenvolvimento, Banco e Dashboard)</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-2: #334155;
+            --border: #475569;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --primary: #38bdf8;
+            --primary-dark: #0284c7;
+            --green: #4ade80;
+            --amber: #fbbf24;
+            --purple: #c084fc;
+            --red: #f87171;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%);
+            padding: 36px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+        }
+        header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        header h1 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+        }
+        header p {
+            margin: 0 auto;
+            max-width: 720px;
+            color: #e0f2fe;
+            font-size: 16px;
+        }
+
+        /* Barra fixa de navegação e modo treino */
+        .sticky-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--surface-2);
+            padding: 12px 20px;
+        }
+        .sticky-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .nav-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .nav-steps a {
+            color: var(--text);
+            text-decoration: none;
+            background: var(--surface);
+            border: 1px solid var(--surface-2);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .nav-steps a:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .btn-quiz {
+            background: var(--amber);
+            color: #0f172a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .btn-quiz.active {
+            background: var(--green);
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px 60px;
+        }
+
+        /* Mnemônico 5 Passos */
+        .mnemonic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+        .mnemonic-card {
+            background: var(--surface);
+            border: 1px solid var(--surface-2);
+            border-top: 4px solid var(--primary);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .mnemonic-card .step-num {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+        .mnemonic-card h3 {
+            margin: 4px 0 6px;
+            font-size: 17px;
+        }
+        .mnemonic-card p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* Seções de Passo */
+        .step-section {
+            background: var(--surface);
+            border: 1px solid var(--surface-2);
+            border-radius: 12px;
+            padding: 26px;
+            margin-bottom: 28px;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 1px solid var(--surface-2);
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .step-badge {
+            background: var(--primary-dark);
+            color: #fff;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .step-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+        .pts-tag {
+            background: rgba(74, 222, 128, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(74, 222, 128, 0.35);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* Dicas de Memorização */
+        .memory-box {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 18px;
+        }
+        .memory-box strong {
+            color: var(--primary);
+        }
+
+        .warn-box {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid var(--amber);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 14px;
+            font-size: 14px;
+        }
+
+        /* Blocos de Código */
+        .code-wrapper {
+            position: relative;
+            margin: 14px 0;
+            background: #090d16;
+            border: 1px solid var(--surface-2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .code-bar {
+            background: #111827;
+            padding: 8px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1f2937;
+            font-size: 13px;
+            color: var(--muted);
+            font-family: Consolas, monospace;
+        }
+        .btn-copy {
+            background: var(--surface-2);
+            color: var(--text);
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .btn-copy:hover {
+            background: var(--primary-dark);
+        }
+        pre {
+            margin: 0;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', Consolas, monospace;
+            font-size: 13.5px;
+            line-height: 1.55;
+            color: #e2e8f0;
+        }
+
+        /* Modo Treino de Memorização (Blur) */
+        body.quiz-mode pre .memorize {
+            filter: blur(6px);
+            background: rgba(251, 191, 36, 0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+            user-select: none;
+        }
+        body.quiz-mode pre .memorize:hover {
+            filter: blur(0);
+            background: transparent;
+        }
+
+        /* Árvore de pastas */
+        .folder-tree {
+            background: #090d16;
+            border: 1px solid var(--surface-2);
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            color: var(--green);
+        }
+
+        /* Tabela das 3 Queries SQL */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid var(--surface-2);
+            padding: 11px 14px;
+            text-align: left;
+        }
+        th {
+            background: #0f172a;
+            color: var(--primary);
+        }
+        code {
+            font-family: Consolas, monospace;
+            background: rgba(255,255,255,0.08);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--amber);
+        }
+
+        /* Checklist Interativo */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: #0f172a;
+            border: 1px solid var(--surface-2);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .checklist-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--green);
+            cursor: pointer;
+        }
+        .checklist-item.done {
+            border-color: var(--green);
+            color: var(--green);
+            text-decoration: line-through;
+        }
+        .progress-bar-bg {
+            height: 12px;
+            background: #0f172a;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 12px 0 20px;
+            border: 1px solid var(--surface-2);
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--green));
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="badge">SAEP — Técnico em Informática</div>
+    <h1>Guia de Memorização Rápida — OS 191045</h1>
+    <p>Aprenda e memorize todo o Sistema Web, Banco de Dados, Backup Automático e Dashboard em <strong>5 Passos Curtos (Método B-B-P-C-D)</strong>.</p>
+</header>
+
+<div class="sticky-bar">
+    <div class="sticky-inner">
+        <div class="nav-steps">
+            <a href="#passo1">1. Banco</a>
+            <a href="#passo2">2. Backup (.bat)</a>
+            <a href="#passo3">3. Python (app.py)</a>
+            <a href="#passo4">4. Cadastro HTML</a>
+            <a href="#passo5">5. Dashboard HTML</a>
+            <a href="#checklist">Checklist Avaliador</a>
+        </div>
+        <button class="btn-quiz" id="btnQuiz" onclick="toggleQuiz()">
+            🧠 Ativar Modo Treino (Esconder Códigos-Chave)
+        </button>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- MNEMÔNICO DOS 5 PASSOS -->
+    <div class="mnemonic-grid">
+        <div class="mnemonic-card">
+            <div class="step-num">Passo 1 • Letra B</div>
+            <h3>Banco SQL</h3>
+            <p>Criar <code>dbfilialnorte</code> no phpMyAdmin e importar o arquivo <code>.sql</code>.</p>
+        </div>
+        <div class="mnemonic-card">
+            <div class="step-num">Passo 2 • Letra B</div>
+            <h3>Backup 06h/18h</h3>
+            <p>Script <code>backup.bat</code> em <code>C:\BKP_BANCO</code> com máscara <code>BKP-DDMMAAAAHHMM</code>.</p>
+        </div>
+        <div class="mnemonic-card">
+            <div class="step-num">Passo 3 • Letra P</div>
+            <h3>Python (Flask)</h3>
+            <p>Um único <code>app.py</code> com 2 rotas: <code>/</code> (INSERT) e <code>/dashboard</code> (3 SELECTs).</p>
+        </div>
+        <div class="mnemonic-card">
+            <div class="step-num">Passo 4 • Letra C</div>
+            <h3>Cadastro HTML</h3>
+            <p>5 campos + CSS simples + 3 botões (<code>submit</code>, <code>reset</code> e link Voltar).</p>
+        </div>
+        <div class="mnemonic-card">
+            <div class="step-num">Passo 5 • Letra D</div>
+            <h3>Dashboard + Rede</h3>
+            <p>Mostrar Estoque, Vencidos e Top 5 + criar atalho na Área de Trabalho do <code>PC_02</code>.</p>
+        </div>
+    </div>
+
+    <!-- ESTRUTURA DE ARQUIVOS -->
+    <div class="step-section">
+        <div class="step-header">
+            <div class="step-title">
+                <span class="step-badge">ESTRUTURA</span>
+                <h2>Os 4 Arquivos que Você Vai Criar</h2>
+            </div>
+        </div>
+        <p>Crie uma pasta chamada <code>sistema</code> na Área de Trabalho e abra no <strong>VS Code</strong>. Você só precisa desta estrutura:</p>
+        <div class="folder-tree">
+sistema/<br>
+├── backup.bat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8;"># Script de backup do MySQL</span><br>
+├── app.py &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8;"># Servidor Python Flask (45 linhas)</span><br>
+└── templates/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8;"># Pasta obrigatória do Flask para os HTMLs</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── cadastro.html &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8;"># Formulário de Cadastro de Produto</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── dashboard.html &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#94a3b8;"># Tela com Estoque, Vencidos e Top 5</span>
+        </div>
+    </div>
+
+    <!-- PASSO 1: BANCO DE DADOS -->
+    <div class="step-section" id="passo1">
+        <div class="step-header">
+            <div class="step-title">
+                <span class="step-badge">PASSO 1</span>
+                <h2>Criar e Importar o Banco de Dados (<code>dbfilialnorte</code>)</h2>
+            </div>
+            <span class="pts-tag">Vale 2 Pontos na Lista</span>
+        </div>
+
+        <div class="memory-box">
+            <strong>💡 Como decorar:</strong> O nome do banco está no próprio nome do arquivo que o avaliador entrega (<code>dbfilialnorte_mysql.sql</code> → banco <strong><code>dbfilialnorte</code></strong>).
+        </div>
+
+        <ol>
+            <li>Abra o <strong>XAMPP Control Panel</strong> e clique em <strong>Start</strong> no <strong>Apache</strong> e no <strong>MySQL</strong>.</li>
+            <li>Abra o navegador em <code>http://localhost/phpmyadmin</code> (ou <code>http://localhost:8080/phpmyadmin</code>).</li>
+            <li>Clique em <strong>Novo (New)</strong> no menu esquerdo, digite exatamente <strong><code>dbfilialnorte</code></strong> e clique em <strong>Criar</strong>.</li>
+            <li>Clique na aba <strong>Importar</strong>, escolha o arquivo <code>dbfilialnorte_mysql.sql</code> da pasta <code>SAEP_TI</code> e clique em <strong>Importar</strong>.</li>
+            <li>Confira se apareceram as duas tabelas: <strong><code>produtos</code></strong> e <strong><code>vendas</code></strong>.</li>
+        </ol>
+    </div>
+
+    <!-- PASSO 2: BACKUP AUTOMÁTICO -->
+    <div class="step-section" id="passo2">
+        <div class="step-header">
+            <div class="step-title">
+                <span class="step-badge">PASSO 2</span>
+                <h2>Script de Backup (<code>backup.bat</code>) e Agendamento (06h e 18h)</h2>
+            </div>
+            <span class="pts-tag">Vale 6 Pontos na Lista (Peso 3 + 3)</span>
+        </div>
+
+        <div class="memory-box">
+            <strong>💡 Segredo para decorar a máscara <code>BKP-DDMMAAAAHHMM</code> sem contar posições:</strong><br>
+            • <code>%date:/=%</code> tira as barras da data (<code>05/11/2026</code> vira <code>05112026</code> sozinho!).<br>
+            • <code>set H=%time: =0%</code> troca o espaço da manhã por zero e <code>%H:~0,2%%H:~3,2%</code> pega Hora e Minuto!
+        </div>
+
+        <div class="code-wrapper">
+            <div class="code-bar">
+                <span>backup.bat (Apenas 4 linhas!)</span>
+                <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+            </div>
+<pre><code>mkdir <span class="memorize">C:\BKP_BANCO</span> 2&gt;nul
+set D=<span class="memorize">%date:/=%</span>
+set H=<span class="memorize">%time: =0%</span>
+"C:\xampp\mysql\bin\mysqldump.exe" -u root <span class="memorize">dbfilialnorte</span> &gt; "C:\BKP_BANCO\<span class="memorize">BKP-%D%%H:~0,2%%H:~3,2%.sql</span>"</code></pre>
+        </div>
+
+        <p><strong>Como agendar às 06h e às 18h em 10 segundos pelo terminal (CMD):</strong></p>
+        <div class="code-wrapper">
+            <div class="code-bar">
+                <span>Comandos para agendar (ou use o Agendador de Tarefas do Windows)</span>
+                <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+            </div>
+<pre><code>schtasks /create /sc daily /tn "Backup06h" /tr "<span class="memorize">C:\sistema\backup.bat</span>" /st <span class="memorize">06:00</span> /f
+schtasks /create /sc daily /tn "Backup18h" /tr "<span class="memorize">C:\sistema\backup.bat</span>" /st <span class="memorize">18:00</span> /f</code></pre>
+        </div>
+        <div class="warn-box">
+            ⚠️ <strong>Não esqueça:</strong> Dê 2 cliques no <code>backup.bat</code> pelo menos uma vez para deixar a pasta <code>C:\BKP_BANCO</code> criada com um arquivo <code>.sql</code> lá dentro para o avaliador ver!
+        </div>
+    </div>
+
+    <!-- PASSO 3: PYTHON FLASK (app.py) -->
+    <div class="step-section" id="passo3">
+        <div class="step-header">
+            <div class="step-title">
+                <span class="step-badge">PASSO 3</span>
+                <h2>Servidor Python Flask (<code>app.py</code>)</h2>
+            </div>
+            <span class="pts-tag">Conexão + Salvar + 3 Consultas do Dashboard</span>
+        </div>
+
+        <div class="memory-box">
+            <strong>💡 Memorize as 3 Consultas SQL do Dashboard:</strong>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Indicador Pedido na OS</th>
+                    <th>Consulta SQL Exata para Memorizar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Total em Estoque</strong></td>
+                    <td><code>SELECT SUM(quantidade_estoque) FROM produtos</code></td>
+                </tr>
+                <tr>
+                    <td><strong>2. Produtos Vencidos</strong></td>
+                    <td><code>SELECT COUNT(*) FROM produtos WHERE validade &lt; CURDATE()</code></td>
+                </tr>
+                <tr>
+                    <td><strong>3. Top 5 Mais Vendidos</strong></td>
+                    <td><code>SELECT p.nome_produto, SUM(v.quantidade_vendida) AS t FROM vendas v JOIN produtos p ON p.id = v.id_produto GROUP BY p.id ORDER BY t DESC LIMIT 5</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>No terminal do VS Code, instale os pacotes (se precisar): <code>pip install flask mysql-connector-python</code></p>
+
+        <div class="code-wrapper">
+            <div class="code-bar">
+                <span>app.py</span>
+                <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+            </div>
+<pre><code>from flask import Flask, render_template, request
+import mysql.connector
+
+app = Flask(__name__)
+
+def conectar():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="<span class="memorize">dbfilialnorte</span>"
+    )
+
+@app.route("/", methods=["GET", "POST"])
+def cadastro():
+    msg = ""
+    if request.method == "POST":
+        con = conectar()
+        cur = con.cursor()
+        sql = "<span class="memorize">INSERT INTO produtos (nome_produto, validade, quantidade_estoque, preco, categoria) VALUES (%s, %s, %s, %s, %s)</span>"
+        dados = (
+            request.form["nome"],
+            request.form["validade"],
+            request.form["estoque"],
+            request.form["preco"],
+            request.form["categoria"]
+        )
+        cur.execute(sql, dados)
+        con.commit()
+        con.close()
+        msg = "Produto salvo com sucesso!"
+    return render_template("cadastro.html", msg=msg)
+
+@app.route("/dashboard")
+def dashboard():
+    con = conectar()
+    cur = con.cursor()
+
+    cur.execute("<span class="memorize">SELECT SUM(quantidade_estoque) FROM produtos</span>")
+    estoque = cur.fetchone()[0]
+
+    cur.execute("<span class="memorize">SELECT COUNT(*) FROM produtos WHERE validade &lt; CURDATE()</span>")
+    vencidos = cur.fetchone()[0]
+
+    cur.execute("""
+        <span class="memorize">SELECT p.nome_produto, SUM(v.quantidade_vendida) AS t
+        FROM vendas v
+        JOIN produtos p ON p.id = v.id_produto
+        GROUP BY p.id
+        ORDER BY t DESC
+        LIMIT 5</span>
+    """)
+    top5 = cur.fetchall()
+
+    con.close()
+    return render_template("dashboard.html", estoque=estoque, vencidos=vencidos, top5=top5)
+
+if __name__ == "__main__":
+    app.run(<span class="memorize">host="0.0.0.0"</span>, port=5000, debug=True)</code></pre>
+        </div>
+
+        <div class="warn-box">
+            ⚠️ <strong>Por que colocar <code>host="0.0.0.0"</code> na última linha?</strong> Porque o Dashboard será aberto a partir da outra estação (<code>PC_02 - Gestor</code>) pela rede! Sem <code>host="0.0.0.0"</code>, o Flask só aceita acesso local.
+        </div>
+    </div>
+
+    <!-- PASSO 4: TELA DE CADASTRO -->
+    <div class="step-section" id="passo4">
+        <div class="step-header">
+            <div class="step-title">
+                <span class="step-badge">PASSO 4</span>
+                <h2>Tela de Cadastro (<code>templates/cadastro.html</code>)</h2>
+            </div>
+            <span class="pts-tag">Campos + Validação Data + CSS + Botão Limpar</span>
+        </div>
+
+        <div class="memory-box">
+            <strong>💡 Truques que garantem nota máxima sem escrever JavaScript:</strong><br>
+            • Campo Validade: use <code>&lt;input type="date" name="validade" required&gt;</code> (já valida apenas datas!).<br>
+            • Botão Limpar: use <code>&lt;button type="reset"&gt;Limpar&lt;/button&gt;</code> (limpa o formulário todo nativamente!).
+        </div>
+
+        <div class="code-wrapper">
+            <div class="code-bar">
+                <span>templates/cadastro.html</span>
+                <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+            </div>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-br"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Cadastro de Produto&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: Arial; background: #f4f6f9; padding: 30px; }
+        .caixa { max-width: 650px; margin: auto; background: #fff; padding: 25px; border: 1px solid #ccc; border-radius: 6px; }
+        .grade { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        input, select { width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn { padding: 8px 16px; border: 1px solid #ccc; background: #eee; border-radius: 4px; text-decoration: none; color: #000; cursor: pointer; }
+        .azul { background: #0d6efd; color: #fff; border: none; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="caixa"&gt;
+        &lt;h2&gt;Cadastro de Produto&lt;/h2&gt;
+        {% if msg %}&lt;p style="color:green;"&gt;{{ msg }}&lt;/p&gt;{% endif %}
+
+        &lt;form method="POST"&gt;
+            &lt;div class="grade"&gt;
+                &lt;div&gt;
+                    &lt;label&gt;Nome *&lt;/label&gt;
+                    &lt;input type="text" name="<span class="memorize">nome</span>" placeholder="Ex.: Arroz Tipo 1" required&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label&gt;Validade *&lt;/label&gt;
+                    &lt;input type="<span class="memorize">date</span>" name="<span class="memorize">validade</span>" required&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label&gt;Estoque *&lt;/label&gt;
+                    &lt;input type="number" name="<span class="memorize">estoque</span>" placeholder="Ex.: 120" required&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label&gt;Preço (R$) *&lt;/label&gt;
+                    &lt;input type="number" step="<span class="memorize">0.01</span>" name="<span class="memorize">preco</span>" placeholder="Ex.: 25.90" required&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label&gt;Categoria *&lt;/label&gt;
+                    &lt;select name="<span class="memorize">categoria</span>" required&gt;
+                        &lt;option value=""&gt;Selecione...&lt;/option&gt;
+                        &lt;option&gt;Alimentos&lt;/option&gt;
+                        &lt;option&gt;Bebidas&lt;/option&gt;
+                        &lt;option&gt;Higiene&lt;/option&gt;
+                        &lt;option&gt;Limpeza&lt;/option&gt;
+                        &lt;option&gt;Utilidades&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;button type="<span class="memorize">submit</span>" class="btn azul"&gt;Salvar&lt;/button&gt;
+            &lt;button type="<span class="memorize">reset</span>" class="btn"&gt;Limpar&lt;/button&gt;
+            &lt;a href="/dashboard" class="btn"&gt;Voltar&lt;/a&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+    </div>
+
+    <!-- PASSO 5: TELA DE DASHBOARD E REDE -->
+    <div class="step-section" id="passo5">
+        <div class="step-header">
+            <div class="step-title">
+                <span class="step-badge">PASSO 5</span>
+                <h2>Dashboard (<code>templates/dashboard.html</code>) + Atalho no <code>PC_02</code></h2>
+            </div>
+            <span class="pts-tag">Vale 6 Pontos (Dashboard) + 3 Pontos (Atalho)</span>
+        </div>
+
+        <div class="code-wrapper">
+            <div class="code-bar">
+                <span>templates/dashboard.html</span>
+                <button class="btn-copy" onclick="copyCode(this)">Copiar</button>
+            </div>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-br"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Dashboard&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: Arial; background: #f4f6f9; padding: 30px; }
+        .caixa { max-width: 650px; margin: auto; background: #fff; padding: 25px; border: 1px solid #ccc; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background: #0d6efd; color: #fff; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="caixa"&gt;
+        &lt;h2&gt;Dashboard - Filial Norte&lt;/h2&gt;
+        &lt;p&gt;&lt;b&gt;Quantidade Total em Estoque:&lt;/b&gt; <span class="memorize">{{ estoque }}</span>&lt;/p&gt;
+        &lt;p&gt;&lt;b&gt;Quantidade de Produtos Vencidos:&lt;/b&gt; <span class="memorize">{{ vencidos }}</span>&lt;/p&gt;
+
+        &lt;h3&gt;Top 5 Produtos Mais Vendidos&lt;/h3&gt;
+        &lt;table&gt;
+            &lt;tr&gt;&lt;th&gt;Produto&lt;/th&gt;&lt;th&gt;Quantidade Vendida&lt;/th&gt;&lt;/tr&gt;
+            <span class="memorize">{% for item in top5 %}</span>
+            &lt;tr&gt;
+                &lt;td&gt;<span class="memorize">{{ item[0] }}</span>&lt;/td&gt;
+                &lt;td&gt;<span class="memorize">{{ item[1] }}</span>&lt;/td&gt;
+            &lt;/tr&gt;
+            <span class="memorize">{% endfor %}</span>
+        &lt;/table&gt;
+        &lt;br&gt;
+        &lt;a href="/"&gt;Voltar para Cadastro&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <div class="warn-box">
+            <strong>🌐 Como abrir o Dashboard na outra estação (<code>PC_02 - Gestor</code>):</strong><br>
+            1. No <strong><code>PC_01</code></strong>, libere a porta 5000 no Firewall (CMD como Admin):<br>
+            <code>netsh advfirewall firewall add rule name="Flask5000" dir=in action=allow protocol=TCP localport=5000</code><br>
+            2. Na Área de Trabalho do Windows do <strong><code>PC_02</code></strong>: Botão direito &gt; <em>Novo &gt; Atalho</em> &gt; coloque o IP do <code>PC_01</code>:<br>
+            • <strong>Prova 01:</strong> <code>http://192.168.10.1:5000/dashboard</code><br>
+            • <strong>Prova 02:</strong> <code>http://172.16.0.1:5000/dashboard</code><br>
+            • <strong>Prova 03:</strong> <code>http://10.0.0.1:5000/dashboard</code>
+        </div>
+    </div>
+
+    <!-- CHECKLIST INTERATIVO -->
+    <div class="step-section" id="checklist">
+        <div class="step-header">
+            <div class="step-title">
+                <span class="step-badge">CHECKLIST</span>
+                <h2>Simulador da Lista de Verificação do Avaliador</h2>
+            </div>
+            <span class="pts-tag" id="progressText">0 / 12 Itens Concluídos</span>
+        </div>
+
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 1. Criou o banco de dados <code>dbfilialnorte</code>? (Peso 1)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 2. Importou as tabelas <code>produtos</code> e <code>vendas</code> conforme o script SQL? (Peso 1)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 3. Criou o script <code>backup.bat</code> salvando em <code>C:\BKP_BANCO\BKP-DDMMAAAAHHMM.sql</code>? (Peso 3)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 4. Agendou o backup para rodar diariamente às <code>06:00</code> e às <code>18:00</code>? (Peso 3)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 5. Criou a conexão com o banco de dados no <code>app.py</code>? (Peso 2)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 6. Criou os 5 campos (Nome, Validade com data, Estoque, Preço, Categoria)? (Peso 1)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 7. Estilizou a página com CSS? (Peso 2)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 8. O botão Limpar (<code>type="reset"</code>) limpa os campos da página? (Peso 1)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 9. O botão Salvar insere os dados na tabela <code>produtos</code> do banco? (Peso 3)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 10. O Dashboard exibe a quantidade total de produtos em estoque (<code>3.150</code>)? (Peso 1)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 11. O Dashboard exibe a quantidade de produtos vencidos? (Peso 3)</label>
+        <label class="checklist-item"><input type="checkbox" onchange="updateProgress()"> 12. O Dashboard exibe os Top 5 produtos mais vendidos? (Peso 2)</label>
+    </div>
+
+</div>
+
+<script>
+    function toggleQuiz() {
+        document.body.classList.toggle('quiz-mode');
+        const btn = document.getElementById('btnQuiz');
+        if (document.body.classList.contains('quiz-mode')) {
+            btn.classList.add('active');
+            btn.textContent = '👁️ Mostrar Todos os Códigos (Sair do Modo Treino)';
+        } else {
+            btn.classList.remove('active');
+            btn.textContent = '🧠 Ativar Modo Treino (Esconder Códigos-Chave)';
+        }
+    }
+
+    function copyCode(btn) {
+        const pre = btn.closest('.code-wrapper').querySelector('pre');
+        navigator.clipboard.writeText(pre.innerText);
+        const original = btn.textContent;
+        btn.textContent = 'Copiado! ✓';
+        setTimeout(() => btn.textContent = original, 1500);
+    }
+
+    function updateProgress() {
+        const checks = document.querySelectorAll('.checklist-item input');
+        let done = 0;
+        checks.forEach(c => {
+            if (c.checked) {
+                done++;
+                c.parentElement.classList.add('done');
+            } else {
+                c.parentElement.classList.remove('done');
+            }
+        });
+        const pct = Math.round((done / checks.length) * 100);
+        document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('progressText').textContent = `${done} / ${checks.length} Itens (${pct}%)`;
+    }
+</script>
+
+</body>
+</html>
